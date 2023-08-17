@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Pagination from "./Pagination";
 import { img_300, unavailable } from "./Images";
 
@@ -10,7 +9,7 @@ const Search = () => {
 
   const fetchSearch = async () => {
     const data = await fetch(
-      `https://api.themoviedb.org/3/search/multi?api_key=YOUR_API_KEY&language=en-US&query=${searchText}&page=${page}&include_adult=false`
+      `https://api.themoviedb.org/3/search/multi?api_key=3d820eab8fd533d2fd7e1514e86292ea&language=en-US&query=${searchText}&page=${page}&include_adult=false`
     );
     const { results } = await data.json();
     setContent(results);
@@ -18,7 +17,7 @@ const Search = () => {
 
   useEffect(() => {
     fetchSearch();
-  }, [page]);
+  }, []);
 
   const Search = () => {
     fetchSearch();
@@ -27,7 +26,6 @@ const Search = () => {
   const Trigger = (e) => {
     setSearchText(e.target.value);
   };
-
   return (
     <>
       <div className="container">
@@ -58,29 +56,29 @@ const Search = () => {
                 id,
               } = Val;
               return (
-                <Link
-                  to={`/${media_type}/${id}/watch`}
-                  key={id}
-                  className="col-md-3 col-sm-4 py-3"
-                >
-                  <div className="card bg-dark">
-                    <img
-                      src={
-                        poster_path ? `${img_300}/${poster_path}` : unavailable
-                      }
-                      className="card-img-top pt-3 pb-0 px-3"
-                    />
-                    <div className="card-body">
-                      <h5 className="card-title text-center fs-5">
-                        {title || name}
-                      </h5>
-                      <div className="d-flex fs-6 align-items-center justify-content-evenly movie">
-                        <div>{media_type === "tv" ? "TV" : "Movie"}</div>
-                        <div>{first_air_date || release_date}</div>
+                <>
+                  <div className="col-md-3 col-sm-4 py-3" id="card" key={id}>
+                    <div className="card bg-dark" key={id}>
+                      <img
+                        src={
+                          poster_path
+                            ? `${img_300}/${poster_path}`
+                            : unavailable
+                        }
+                        className="card-img-top pt-3 pb-0 px-3"
+                      />
+                      <div className="card-body">
+                        <h5 className="card-title text-center fs-5">
+                          {title || name}
+                        </h5>
+                        <div className="d-flex fs-6 align-items-center justify-content-evenly movie">
+                          <div>{media_type === "tv" ? "TV" : "Movie"}</div>
+                          <div>{first_air_date || release_date}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </Link>
+                </>
               );
             })}
           {page > 1 && <Pagination page={page} setPage={setPage} />}
