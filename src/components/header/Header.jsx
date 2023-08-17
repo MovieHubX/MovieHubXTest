@@ -11,17 +11,16 @@ const dataNav = [
         path: '/'
     },
     {
+        title: 'Search', // Change the title to "Search"
+        path: '/search'
+    },
+    {
         title: 'Movies',
         path: '/movie'
     },
     {
         title: 'TV Series',
         path: '/tv'
-    },
-    // Add the new section with search icon
-    {
-        title: 'Search',
-        path: '/search'
     }
 ];
 
