@@ -1,22 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 import Pagination from './Pagination';
 import { img_300, unavailable } from './Images';
 
+const fetchSearchResults = async (searchText, page) => {
+  const response = await axios.get(
+    `https://api.themoviedb.org/3/search/multi`,
+    {
+      params: {
+        api_key: '3d820eab8fd533d2fd7e1514e86292ea',
+        language: 'en-US',
+        query: searchText,
+        page: page,
+        include_adult: false,
+      },
+    }
+  );
+  return response.data.results;
+};
+
 const SearchResults = ({ searchText }) => {
-  const [page, setPage] = useState(1);
-  const [content, setContent] = useState([]);
+  const { data: content, isLoading, isError } = useQuery(
+    ['searchResults', searchText],
+    () => fetchSearchResults(searchText, 1),
+    { keepPreviousData: true }
+  );
 
-  const fetchSearch = async () => {
-    const data = await fetch(
-      `https://api.themoviedb.org/3/search/multi?api_key=3d820eab8fd533d2fd7e1514e86292ea&language=en-US&query=${searchText}&page=${page}&include_adult=false`
-    );
-    const { results } = await data.json();
-    setContent(results);
-  };
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  useEffect(() => {
-    fetchSearch();
-  }, [page, searchText]);
+  if (isError) {
+    return <div>Error fetching data</div>;
+  }
 
   return (
     <div className="container">
@@ -42,6 +59,7 @@ const SearchResults = ({ searchText }) => {
                       : unavailable
                   }
                   className="card-img-top pt-3 pb-0 px-3"
+                  alt={title || name}
                 />
                 <div className="card-body">
                   <h5 className="card-title text-center fs-5">
@@ -56,7 +74,7 @@ const SearchResults = ({ searchText }) => {
             </div>
           );
         })}
-        {page > 1 && <Pagination page={page} setPage={setPage} />}
+        <Pagination searchText={searchText} />
       </div>
     </div>
   );
