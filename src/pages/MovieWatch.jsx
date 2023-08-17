@@ -1,5 +1,3 @@
-// src/pages/MovieWatch.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import apiType from '../api/apiType';
@@ -8,7 +6,25 @@ import './detail.scss';
 import Movies from '../components/movies/Movies';
 
 const MovieWatch = () => {
-    // ... (Your existing code)
+    const {category, id} = useParams();
+    const [data , setData] = useState(null);
+    const [dataseason , setDataseason] = useState(null);
+    useEffect(() =>{
+        const getWatchMovie = async () =>{ 
+            const response = await apiType.detail(category, id, {params:{}});
+            
+            setData(response);  
+            console.log(response)
+            }
+        const getSeason = async () =>{ 
+            const response1 = await apiType.tvSeasons(id, {params:{}});
+                
+            setDataseason(response1);  
+            console.log(response1)
+         }   
+        getWatchMovie();
+        getSeason()
+    },[category, id]);
 
     return (
         <>
@@ -18,10 +34,21 @@ const MovieWatch = () => {
                         className='video__watch'
                         src={`${category==='movie' ? apiConfig.embedMovie(data.id) : apiConfig.embedTV(data.id,data.seasons[0].season_number,data.seasons[0].episode_count)}`}
                         frameBorder="0"
-                        allowFullScreen>
-                    </iframe>
+                        allowFullScreen
+                    ></iframe>
                     <div className='video__info'>
-                        {/* ... (Your existing code) */}
+                        <h2 className='detail__info-title'>{data.title}</h2>
+                        <p className='detail__info-overview text-nice'>{data.overview}</p>
+                        <p className='detail__info-lang mb'>Original language : {data.original_language}</p>
+                        <p className='detail__info-date'>Release Date : {data.release_date}</p>
+                        <div className='detail__info-genres mb-1'>
+                            {data.genres && data.genres.slice(0, 7).map((genres, i) => (
+                                <span key={i} className='btnoutline2'>{genres.name}</span>
+                            ))}
+                        </div>
+                        <div className='detail__info-vote mb-2'>
+                            Rate : <span className='vote'>{data.vote_average.toFixed(1)}</span>({data.vote_count} votes)
+                        </div>
                     </div>
                     <div className='similar'>
                         <div className=''>
