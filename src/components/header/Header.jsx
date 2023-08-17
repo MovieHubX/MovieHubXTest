@@ -19,15 +19,15 @@ const dataNav = [
     path: '/tv'
   },
   {
-    title: 'Search',
-    path: '/search'
+    title: 'Search', // Change the title to 'Search'
+    path: '/search-results' // Change the path to '/search-results'
   }
 ];
 
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const history = useHistory(); // Use history for navigation
+  const history = useHistory();
 
   const { pathname } = useLocation();
   const active = dataNav.findIndex(e => e.path === pathname);
@@ -61,7 +61,7 @@ const Header = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    history.push(`/search?query=${searchText}`); // Navigate to search results page
+    history.push(`/search-results?query=${searchText}`); // Navigate to search results page
   };
 
   return (
