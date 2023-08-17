@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Pagination from "../Components/Pagination";
-import { img_300, unavailable } from "../Components/config";
+import Pagination from "./Pagination";
+import { img_300, unavailable } from "./Images";
 
 const Search = () => {
   const [searchText, setSearchText] = useState("");
