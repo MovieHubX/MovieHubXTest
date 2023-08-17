@@ -51,6 +51,7 @@ const Header = () => {
     if (showSearch) {
       setShowSearch(false);
       setSearchText('');
+      setSearchQuery(''); // Reset search query
     } else {
       setShowSearch(true);
     }
