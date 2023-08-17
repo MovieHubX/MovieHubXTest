@@ -98,7 +98,11 @@ const Header = () => {
           </div>
         )}
       </div>
-      {searchQuery && <SearchResults query={searchQuery} />} {/* Render SearchResults component */}
+      {searchQuery && (
+        <div className={`search-results ${showSearch ? 'show' : ''}`}>
+          <SearchResults query={searchQuery} />
+        </div>
+      )} {/* Render SearchResults component */}
     </div>
   );
 };
