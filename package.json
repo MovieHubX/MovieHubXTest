@@ -17,6 +17,7 @@
     "scss": "^0.2.4",
     "swiper": "^8.3.2",
     "web-vitals": "^2.1.4"
+    "react-query": "^3.22.0",
   },
   "scripts": {
     "start": "react-scripts start",
