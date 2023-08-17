@@ -1,6 +1,6 @@
 import './header.scss';
 import logo from '../../images/ico.png';
-import React, { useEffect, useState } from 'react'; // Import useState
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import Search from '../../pages/Search'; // Import the Search component
@@ -11,21 +11,21 @@ const dataNav = [
         path: '/'
     },
     {
-        title: 'Search', // Change the title to "Search"
-        path: '/search'
-    },
-    {
         title: 'Movies',
         path: '/movie'
     },
     {
         title: 'TV Series',
         path: '/tv'
+    },
+    {
+        title: 'Search', // Keep the title as 'Search'
+        path: '/search'
     }
 ];
 
 const Header = () => {
-    const [showSearch, setShowSearch] = useState(false); // State to manage search visibility
+    const [showSearch, setShowSearch] = useState(false);
 
     const { pathname } = useLocation();
     const active = dataNav.findIndex(e => e.path === pathname);
@@ -52,22 +52,15 @@ const Header = () => {
                     <Link to="/">MovieHubX</Link>
                 </div>
                 <ul className="header__nav">
-                    {
-                        dataNav.map((e, i) => (
-                            <li key={i} className={`${i === active ? 'active' : ''}`}>
-                                <Link to={e.path}>
-                                    {e.title}
-                                </Link>
-                            </li>
-                        ))
-                    }
+                    {dataNav.map((e, i) => (
+                        <li key={i} className={`${i === active ? 'active' : ''}`}>
+                            <Link to={e.path}>
+                                {e.title === 'Search' ? <SearchOutlined /> : e.title}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
-                <div className="header__search">
-                    {/* Toggle the search visibility on click */}
-                    <SearchOutlined onClick={() => setShowSearch(!showSearch)} />
-                </div>
             </div>
-            {/* Conditionally render the Search component */}
             {showSearch && <Search />}
         </div>
     );
