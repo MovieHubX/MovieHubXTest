@@ -1,7 +1,7 @@
 import './header.scss';
 import logo from '../../images/ico.png';
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
 import SearchResults from '../../pages/SearchResults'; // Import the SearchResults component
 
@@ -19,26 +19,27 @@ const dataNav = [
     path: '/tv'
   },
   {
-    title: 'Search', // Change the title to 'Search'
-    path: '/search-results' // Change the path to '/search-results'
+    title: 'Search',
+    path: '/search-results'
   }
 ];
 
 const Header = () => {
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [searchQuery, setSearchQuery] = useState(''); // Store search query
-  const history = useHistory();
 
   const { pathname } = useLocation();
   const active = dataNav.findIndex(e => e.path === pathname);
 
   useEffect(() => {
     const shrinkHeader = () => {
-      if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-        document.querySelector('.header').classList.add('shrink');
-      } else {
-        document.querySelector('.header').classList.remove('shrink');
+      const headerElement = document.querySelector('.header');
+      if (headerElement) {
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+          headerElement.classList.add('shrink');
+        } else {
+          headerElement.classList.remove('shrink');
+        }
       }
     };
     window.addEventListener('scroll', shrinkHeader);
@@ -48,23 +49,11 @@ const Header = () => {
   }, []);
 
   const handleSearchIconClick = () => {
-    if (showSearch) {
-      setShowSearch(false);
-      setSearchText('');
-      setSearchQuery(''); // Reset search query
-    } else {
-      setShowSearch(true);
-    }
+    setShowSearchInput(true);
   };
 
   const handleSearchInputChange = (e) => {
     setSearchText(e.target.value);
-  };
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setSearchQuery(searchText); // Store the search query
-    history.push(`/search-results?query=${searchText}`); // Navigate to search results page
   };
 
   return (
@@ -78,31 +67,26 @@ const Header = () => {
           {dataNav.map((e, i) => (
             <li key={i} className={`${i === active ? 'active' : ''}`}>
               {e.title === 'Search' ? (
-                <SearchOutlined onClick={handleSearchIconClick} />
+                showSearchInput ? (
+                  <form onSubmit={(e) => e.preventDefault()}>
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      value={searchText}
+                      onChange={handleSearchInputChange}
+                    />
+                  </form>
+                ) : (
+                  <SearchOutlined onClick={handleSearchIconClick} />
+                )
               ) : (
                 <Link to={e.path}>{e.title}</Link>
               )}
             </li>
           ))}
         </ul>
-        {showSearch && (
-          <div className="header__search">
-            <form onSubmit={handleSearchSubmit}>
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchText}
-                onChange={handleSearchInputChange}
-              />
-            </form>
-          </div>
-        )}
       </div>
-      {searchQuery && (
-        <div className={`search-results ${showSearch ? 'show' : ''}`}>
-          <SearchResults query={searchQuery} />
-        </div>
-      )} {/* Render SearchResults component */}
+      {searchText && <SearchResults searchText={searchText} />}
     </div>
   );
 };
