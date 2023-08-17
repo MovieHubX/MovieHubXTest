@@ -1,8 +1,9 @@
 import './header.scss';
 import logo from '../../images/ico.png';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react'; // Import useState
 import { Link, useLocation } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
+import Search from '../../pages/Search'; // Import the Search component
 
 const dataNav = [
     {
@@ -25,9 +26,9 @@ const dataNav = [
 ];
 
 const Header = () => {
+    const [showSearch, setShowSearch] = useState(false); // State to manage search visibility
 
     const { pathname } = useLocation();
-    
     const active = dataNav.findIndex(e => e.path === pathname);
 
     useEffect(() => {
@@ -63,11 +64,12 @@ const Header = () => {
                     }
                 </ul>
                 <div className="header__search">
-                    <Link to="/search">
-                        <SearchOutlined />
-                    </Link>
+                    {/* Toggle the search visibility on click */}
+                    <SearchOutlined onClick={() => setShowSearch(!showSearch)} />
                 </div>
             </div>
+            {/* Conditionally render the Search component */}
+            {showSearch && <Search />}
         </div>
     );
 }
