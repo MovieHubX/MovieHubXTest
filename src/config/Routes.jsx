@@ -4,27 +4,28 @@ import Home from '../pages/Home';
 import Catalog from '../pages/Catalog';
 import Detail from '../pages/Detail';
 import MovieWatch from '../pages/MovieWatch';
-import Search from '../pages/Search'; // Import the Search component
+import SearchResults from '../pages/SearchResults'; // Import the SearchResults component
 
 const Routes = () => {
     return (
         <Switch>
-            {/* Update the /:category/search/:keyword route */}
-            <Route path='/search/:keyword'>
-                <Search />
+            <Route path='/search-results'>
+                <SearchResults/>
+            </Route>
+            <Route path='/:category/search/:keyword'>
+                <Catalog/>
             </Route>
             <Route path='/:category/:id/watch'>
-                <MovieWatch />
+                <MovieWatch/>
             </Route>
             <Route path='/:category/:id'>
-                <Detail />
+                <Detail/>
             </Route>
             <Route path='/:category'>
-                <Catalog />
+                <Catalog/>
             </Route>
-
             <Route path='/' exact>
-                <Home />
+                <Home/>
             </Route>
         </Switch>
     );
