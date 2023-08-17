@@ -27,6 +27,7 @@ const dataNav = [
 const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [searchQuery, setSearchQuery] = useState(''); // Store search query
   const history = useHistory();
 
   const { pathname } = useLocation();
@@ -61,6 +62,7 @@ const Header = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
+    setSearchQuery(searchText); // Store the search query
     history.push(`/search-results?query=${searchText}`); // Navigate to search results page
   };
 
@@ -95,6 +97,7 @@ const Header = () => {
           </div>
         )}
       </div>
+      {searchQuery && <SearchResults query={searchQuery} />} {/* Render SearchResults component */}
     </div>
   );
 };
