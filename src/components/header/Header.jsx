@@ -62,7 +62,6 @@ const Header = () => {
                         ))
                     }
                 </ul>
-                {/* Add the search icon */}
                 <div className="header__search">
                     <Link to="/search">
                         <SearchOutlined />
